@@ -1,0 +1,54 @@
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 70%; /* Adjust the height as needed */
+}
+
+.carousel__button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+.carousel__button:hover {
+  color: #ccc;
+}
+
+.carousel__button:first-of-type {
+  left: 10px;
+}
+
+.carousel__button:last-of-type {
+  right: 10px;
+}
+
+.carousel__image-container {
+  position: relative;
+  width: 100%;
+  height: 40%;
+  overflow: hidden;
+  size: fixed;
+  
+}
+
+.carousel__image {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  size: fixed;
+
+}
+
+.carousel__image.active {
+  opacity: 1;
+}
