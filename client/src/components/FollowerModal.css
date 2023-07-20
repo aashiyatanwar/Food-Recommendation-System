@@ -1,0 +1,91 @@
+.followerbutton{
+    background-color: #6776ca;
+    color:white;
+    width:130px;
+}
+.followingbutton{
+    background-color: #6776ca;
+    color:white;
+    width:130px;
+}
+.followerbutton:hover{
+    background-color: #2c387e;
+    color:white;
+}
+.followingbutton:hover{
+        background-color: #2c387e;
+        color:white;
+}
+.followedlength{
+    position: absolute;
+    margin-top:16px;
+    margin-left: 120px;
+color:white;
+}
+.followerslength{
+     position: absolute;
+    margin-top:-38px;
+    margin-left: 270px;
+    color:white;
+}
+.pop_up_container{
+    width:400px;
+    margin-left: -110px;
+  margin-top:1px;
+
+}
+.pop_up_body{
+    width:100%;
+    
+}
+.pop_up_card{
+ 
+    width:100%;
+    height: 60px;
+    
+}
+/* FollowerModal.css */
+.name {
+  /* Add styling for the name to make it appear like a link */
+  font-size: 18px;
+  font-weight: bold;
+  color: #007bff; /* Blue color, similar to link color */
+  text-decoration: underline; /* Add an underline to mimic a link */
+  cursor: pointer; /* Change cursor to a pointer to indicate it's clickable */
+  margin-bottom: 5px;
+  margin-left: 10%;
+
+}
+.followersprofile{
+    margin-left: 80%;
+    margin-top: -10%;
+}
+/* Style the name on hover to add interaction */
+.name:hover {
+  color: #0056b3; /* Darker blue color on hover */
+}
+.imagess{
+    
+    margin-left: 70%;
+    margin-top: -7%;
+}
+.pop_up_container{
+margin-left: -15%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+ /* Adjust the alpha value (0.5 in this case) to control the transparency */
+  z-index: 9999; /* Make sure the popup is on top of other elements */
+  background-color: rgba(0, 0, 0, 0); /* Full transparency */
+ position: absolute;
+}
+.pop_up_body {
+  width: 400px;
+  height: 650px;
+  margin-left: 32%;
+  background-color: rgb(232, 233, 242);
+  margin-top: -10%;
+  border-radius: 15px; /* Adjust the value to control the amount of rounding */
+}

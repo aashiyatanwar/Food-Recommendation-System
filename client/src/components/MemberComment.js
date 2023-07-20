@@ -65,26 +65,32 @@ export const MemberComment = (props) => {
 
   return (
     <div>
-      <h3>Comments</h3>
+      <h3 className="commentheader">Comments</h3>
       <ul>
         {console.log("comments", comments)}
 
         {comments.map((comment) => (
           <li key={comment._id}>
-            <span>{comment.text}</span>
-            <button onClick={() => handleDeleteComment(comment._id)}>
+            <span className="text">{comment.text}</span>
+            <button
+              className="delete"
+              onClick={() => handleDeleteComment(comment._id)}
+            >
               Delete
             </button>
           </li>
         ))}
       </ul>
-      <form onSubmit={handleSubmitComment}>
+      <form className="formcomment" onSubmit={handleSubmitComment}>
         <input
+          className="addcomment"
           type="text"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
         />
-        <button type="submit">Add Comment</button>
+        <button className="commentbutton" type="submit">
+          Add Comment
+        </button>
       </form>
     </div>
   );

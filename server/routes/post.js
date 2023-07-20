@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const post = require("../models/post");
-const currId = require("./currentUser");
-const user = require("../models/user");
+
 
 
 router.post("/posts/:userId", async (req, res) => {

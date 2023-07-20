@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./FrontView/Frontview.css";
 import { postLike, postUnlike } from "../api";
 import { useStateValue } from "../context/StateProvider";
-import CommentSection from "./Comments"
-
+import CommentSection from "./Comments";
+import "./Likes.css";
+import { Width } from "devextreme-react/range-selector";
 const Likes = (props) => {
   //console.log("props", props);
   const postId = props.data._id;
@@ -12,26 +13,29 @@ const Likes = (props) => {
   const [popuptogle, setPopuptogle] = useState(false);
   const [styling, setStyling] = useState(null);
   const [{ user }] = useStateValue();
-
+  // Replace with your desired height in pixels
   const changedcontent = (food) => {
+    const popupWidth = 1600; // Replace with your desired width in pixels
+    const popupHeight = 1600;
     setPopupcontent([food]);
     setPopuptogle(!popuptogle);
 
-    if (styling === null) {
-      setStyling({ position: "fixed" });
+    if (popuptogle) {
+      setStyling(null); // If popup is being closed, remove styling
     } else {
-      setStyling(null);
+      setStyling({ position: "fixed" }); // If popup is being opened, set the width and height
     }
   };
 
   const [likesContent, setLikesContent] = useState([]);
-  const [likesToogle, setLikesToggle] = useState(false);
+  const [likesToogle, setLikesToggle] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [showCaption, setShowCaption] = useState(false);
 
   useEffect(() => {
     //likeCount = props.data.likes.length;
-    
+    setLikesToggle(!likesToogle);
     setLikeCount(props.data.likes.length);
     //console.log("likesCount", likeCount);
   }, [props.data.likes]);
@@ -49,38 +53,49 @@ const Likes = (props) => {
     }
   };
 
-  
-
   return (
-    <div>
+    <div className="parent-container">
       <div className="content_card" key={props.data._id}>
         <img src={props.data.images} alt="" />
-        <p>{props.data.Caption}</p>
-        
-        <p>{props.data.comments}</p>
-        <button onClick={() => changedcontent(props)}>Comments</button>
-      </div>
-     
-      <div>
-      <button onClick={() => ChangeLike(props)}>
-        {likesToogle ? "Unlike" : "Like"}
-      </button>
-      <p>Likes: {likeCount}</p>
-      
-    </div>
 
+        <button
+          className="buttoncaption"
+          onMouseEnter={() => setShowCaption(true)}
+          onMouseLeave={() => setShowCaption(false)}
+        >
+          Caption
+        </button>
+
+        {showCaption && <p className="pop_up_caption">{props.data.Caption}</p>}
+      </div>
+
+      <div className="likes">
+        <button onClick={() => ChangeLike(props)}>
+          {likesToogle ? "Unlike " : "Like "}
+          {likeCount}
+        </button>
+      </div>
+      <div className="comments">
+        <button className="buttoncomment" onClick={() => changedcontent(props)}>
+          Comments
+        </button>
+      </div>
       {popuptogle && (
-        <div className="pop_up_container" onClick={changedcontent}>
-          <div className="pop_up_body" onClick={(e) => e.stopPropagation()}>
-            <div className="pop_up_header">
-              <button onClick={changedcontent}>xx</button>
+        <div className="pop_up_containers" onClick={changedcontent}>
+          <div
+            className="pop_up_bodys"
+            style={styling}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="pop_up_headers">
+              <button onClick={changedcontent}>x</button>
             </div>
-            <div className="pop_up_content">
+            <div className="pop_up_contents">
               {popupcontent.map((pop) => {
                 //console.log("pop", popupcontent);
                 return (
-                  <div className="pop_up_card">
-                   <CommentSection data = {pop.data._id}></CommentSection>
+                  <div className="pop_up_cards">
+                    <CommentSection data={pop.data._id}></CommentSection>
                   </div>
                 );
               })}

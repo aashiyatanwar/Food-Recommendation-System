@@ -9,12 +9,14 @@ import { Frontview } from "./FrontView/Frontview";
 import { DropdownMenu, setoption } from "./DropDown/DropdownMenu";
 import Carousel from "./sliding/Carousel";
 import Food from "./FinalData";
-import UserProfile from "./UserProfile";
-
-import CreateAndDisplayPosts from "./CreateAndDisplayPosts";
-
+import { Preptime, sample_time } from "./Preptime";
+import { sample_money, Money } from "./money";
+import { Filter_cuisine, sample_cuisine } from "./filterCuisine";
 const Home = () => {
   const [images, setImages] = useState([]);
+  const sampledata = Food();
+  console.log(sampledata);
+
   useEffect(() => {
     const updateImages = () => {
       const windowWidth = window.innerWidth;
@@ -69,8 +71,7 @@ const Home = () => {
       {/* <Filter /> */}
 
       <Frontview />
-      
-      
+      <div id="results"></div>
     </div>
   );
 };

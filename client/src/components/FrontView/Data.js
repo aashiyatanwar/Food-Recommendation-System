@@ -1,4 +1,4 @@
-export const Food=[
+/*export const Food=[
     {
         name:"Daliya",
         img:'1.avif',
@@ -26,3 +26,4 @@ export const Food=[
         details:"The last food"
     }
 ]
+*/

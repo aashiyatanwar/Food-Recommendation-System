@@ -1,39 +1,144 @@
-* {
-  padding: 0;
-  margin: 0;
-}
-body {
+/* Likes.css */
+
+/* Add this new CSS for Likes component */
+.content_card {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background: #f2f4f6;
-}
-button {
-  background: #fff;
-  border: unset;
-  outline: 0;
-  font-size: 18px;
-  cursor: pointer;
-  color: #65676b;
-  padding: 5px 10px;
-}
-button.liked {
-  color: #0571ed;
-}
-button.liked i{
-  animation: anim 0.5s ease-in-out;
-  -webkit-animation: anim 0.5s ease-in-out;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 250px;
+  /* Add any other styles you want for the content card */
 }
 
-@keyframes anim {
-  100% {
-    transform: rotate(-15deg) scale(1.3);
-    -webkit-transform: rotate(-15deg) scale(1.3);
-    -moz-transform: rotate(-15deg) scale(1.3);
-    -ms-transform: rotate(-15deg) scale(1.3);
-    -o-transform: rotate(-15deg) scale(1.3);
-    filter: blur(0.5px);
-    -webkit-filter: blur(0.5px);
-  }
+.likes {
+  display: flex;
+  margin-left: 380px;
+  margin-top: -5.1rem;
+  max-width: 150px;
+}
+
+.likes button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+
+  width: 80px;
+  height: 40px;
+  font-size: 16px;
+  margin: 4px 4px;
+
+  border-radius: 4px;
+}
+.comments {
+  margin-top: -50px;
+  margin-left: 170px;
+  text-align: center;
+}
+/* Add any other styles you want for the like button */
+
+/* Likes.css */
+
+.parent-container {
+  width: 520px; /* You can adjust the width as per your design */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.parent-container .content_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.parent-container img {
+  width: 100%;
+  max-height: 200px; /* Limit the image height for consistent display */
+  object-fit: cover;
+  border-radius: 8px;
+}
+.parent-container .pop_up_captions {
+  background-color: #3f51b5;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: -45px;
+  font-size: 16px;
+  margin-left: -18rem;
+  text-align: center;
+  color: #fff;
+}
+/* .parent-container .pop_up_caption:hover{
+    background-color: #2c387e;
+} */
+
+.parent-container p {
+  margin: 8px 0;
+}
+
+.parent-container .likes {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.parent-container .likes button {
+  background-color: #6776ca;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.parent-container .likes button:hover {
+  background-color: #2c387e;
+}
+.buttoncomment {
+  background-color: #6776ca;
+
+  color: #fff;
+}
+.buttoncomment:hover {
+  background-color: #2c387e;
+}
+
+.parent-container:hover .pop_up_captions {
+  /* Show the caption when the parent container is hovered */
+  display: block;
+  transform: translateY(100%);
+  opacity: 1;
+  pointer-events: auto;
+
+  transition: transform 4s ease, opacity 4s ease;
+}
+.buttoncaption {
+  margin-left: -60%;
+}
+
+/* Likes.css */
+
+/* Existing CSS for the pop_up_container */
+.pop_up_containers {
+  position: fixed;
+  top: 40%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Adjust the alpha value (0.5 in this case) to control the transparency */
+  z-index: 9999; /* Make sure the popup is on top of other elements */
+  background-color: rgba(0, 0, 0, 0); /* Full transparency */
+}
+.pop_up_bodys {
+  width: 600px;
+  height: 750px;
+  margin-left: 32%;
+  background-color: rgb(232, 233, 242);
+  margin-top: -10%;
+  border-radius: 15px; /* Adjust the value to control the amount of rounding */
+}
+.pop_up_headers {
+  margin-left: 90%;
 }

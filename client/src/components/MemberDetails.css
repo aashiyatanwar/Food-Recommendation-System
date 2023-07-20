@@ -1,0 +1,143 @@
+/* MemberDetails.css */
+.container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  background-color: #f5f5f5; /* Add a light background color */
+  padding: 10px; /* Add some padding to create space around the content */
+}
+
+.image{
+    margin-left: 120%;
+}
+.names {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+margin-left: 150px;
+}
+.fff{
+      display: flex;
+  align-items: baseline;
+margin-left:140%;
+gap: 3px;
+
+}
+.FollowerModal__container {
+  display: flex;
+  align-items: baseline;
+margin-left:140%;
+
+
+}
+
+.Followingcount,
+.Followercount {
+  font-size: 16px;
+  font-weight: bold;
+  color: #007bff;
+padding:10px;
+  margin-left: 40%;
+ 
+
+}
+
+.FollowerModal__length {
+  font-size: 20px;
+  font-weight: bold;
+  
+ 
+}
+/* MemberDetails.css */
+/* MemberDetails.css */
+/* MemberDetails.css */
+.image__container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height:250px;
+
+}
+
+.image__item {
+   /* Set the height of each image (adjust as needed) */
+  object-fit: cover; /* Maintain aspect ratio while covering the container */
+ /* Make the image circular */
+ width:100%;
+ height:100%;
+   background-color:rgb(223, 223, 237) ;
+}
+
+
+.content_cards {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height:250px;
+  /* Add any other styles you want for the content card */
+}
+.parent-containers {
+  width: 50%; /* You can adjust the width as per your design */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-left: 27%;
+  background-color: #f5f5f5;
+}
+
+.parent-containers .content_cards {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.parent-containers img {
+  width: 45%;
+  max-height: 100%; /* Limit the image height for consistent display */
+  object-fit: cover;
+  border-radius: 8px;
+}
+.likebutton{
+    background-color: #6776ca;
+    color: white;
+    background-color: #007bff; 
+}
+.likecount {
+  font-size: 16px;
+  font-weight: bold;
+  color: #555; /* Change the color to your preferred text color */
+  margin-top: 5px;
+
+}
+
+/* Optional: Add hover effect */
+.likebutton:hover {
+ /* Change the color to your preferred hover color */
+ 
+}
+/* MemberDetails.css */
+.caption {
+  font-size: 16px; /* Adjust the font size as needed */
+  line-height: 1.5; /* Adjust the line height for better readability */
+  color: #fff; /* Set the text color to white for better contrast */
+  background-color: #4f9beb; /* Add a blue background color */
+  padding: 10px; /* Add some padding inside the caption */
+  border-radius: 5px; /* Add rounded corners */
+  margin-top: -100px; /* Add some space above the caption */
+  margin-bottom: 20px; /* Add some space below the caption */
+  height:40px;
+  margin-left: -20px;
+}
+.likee{
+   margin-left: 5px;
+   margin-top: 70px;
+}
+.comm{
+     margin-left: 5px;
+   margin-top: 80px;
+}

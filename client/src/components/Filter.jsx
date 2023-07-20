@@ -9,188 +9,232 @@ import { useStateValue } from "../context/StateProvider";
 
 import { sample_money } from "./money";
 import { DropdownMenu } from "./DropDown/DropdownMenu";
-
+// import {sample_cuisine} from "./filterCuisine"
 import { getDataById } from "../api";
 import { actionType } from "../context/reducer";
 
-import Food from "./FinalData"
-
+import Food from "./FinalData";
+import Filter_Cuisine from "./filterCuisine";
 
 var TimeAndMoney = [];
-var TimeAndDiet = [];
-var MoneyAndDiet = [];
+var TimeAndCuisine = [];
+var MoneyAndCuisine = [];
+let filteredData = [];
+let samplecusine = [];
+
 const Filter = () => {
-  const [
-    {
-     data
-    },
-    dispatch,
-  ] = useStateValue();
-  //const sampleData = Food()
+  const [{ data }, dispatch] = useStateValue();
   const [isOpen, setIsOpen] = useState(false);
-  const [isSubmit, setIsSubmit] = useState(false);
   const [time, setTime] = useState([]);
   const [money, setMoney] = useState([]);
-  const [dropdiet, setDropdiet] = useState();
+  const [cuisine, setCuisine] = useState("");
+  const [array, setArray] = useState([]);
+  const [filteredFoodData, setFilteredFoodData] = useState([]);
+
+  useEffect(() => {
+    Food()
+      .then((data) => {
+        setArray(Array.from(data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    filterFoodData();
+  }, [array, cuisine]);
+
+  useEffect(() => {
+    handleSubmit();
+  }, [filteredFoodData]);
+
+  const filterFoodData = () => {
+    if (array.length > 0 && cuisine) {
+      const filteredFood = array.filter((food) => food.Cuisine === cuisine);
+      setFilteredFoodData(filteredFood);
+      console.log("filteredFood after filter", filteredFood);
+    }
+  };
+
+  const uniqueCuisineData = Filter_Cuisine();
 
   const handleSubmit = () => {
-    setIsSubmit(!isSubmit);
-    console.log("Submitted");
+    setIsOpen(false);
     setTime(sample_time);
     setMoney(sample_money);
-    setDropdiet(setoption);
-    setIsOpen(!isOpen);
+    setCuisine(setoption);
+
+    const filteredData = {
+      time: sample_time,
+      money: sample_money,
+      cuisine: filteredFoodData,
+    };
+
+    const filteredResults = ThreeData(
+      filteredData.time,
+      filteredData.money,
+      filteredData.cuisine
+    );
+  };
+
+  const ThreeData = (time, money, sample_cuisine) => {
+    console.log("Running ThreeData function");
+    console.log("time", time, "money", money, "sample_cuisine", sample_cuisine);
+
+    if (
+      time.length !== 99 &&
+      money.length !== 99 &&
+      sample_cuisine.length !== 0
+    ) {
+      filteredData = array.filter((item) => {
+        return (
+          money.some((m) => m.SrNo === item.SrNo) &&
+          time.some((t) => t.SrNo === item.SrNo) &&
+          sample_cuisine.some((c) => c.SrNo === item.SrNo)
+          // money.findIndex((m) => m.SrNo === item.SrNo) !== -1 &&
+          // time.findIndex((t) => t.SrNo === item.SrNo) !== -1
+        );
+      });
+
+      console.log("Filtered Data: ", filteredData);
+    } else if (
+      time.length !== 99 &&
+      money.length !== 99 &&
+      sample_cuisine.length === 0
+    ) {
+      console.log("when one isnull");
+      filteredData = array.filter((item) => {
+        return (
+          money.some((m) => m.SrNo === item.SrNo) &&
+          time.some((t) => t.SrNo === item.SrNo)
+        );
+      });
+
+      console.log("Filtered Data: ", filteredData);
+    } else if (
+      time.length !== 99 &&
+      money.length === 99 &&
+      sample_cuisine.length !== 0
+    ) {
+      console.log("when one isnull");
+      filteredData = array.filter((item) => {
+        return (
+          time.some((t) => t.SrNo === item.SrNo) &&
+          sample_cuisine.some((c) => c.SrNo === item.SrNo)
+        );
+      });
+
+      console.log("Filtered Data: ", filteredData);
+    } else if (
+      time.length === 99 &&
+      money.length !== 99 &&
+      sample_cuisine.length !== 0
+    ) {
+      console.log("when one isnull");
+      filteredData = array.filter((item) => {
+        return (
+          money.some((m) => m.SrNo === item.SrNo) &&
+          sample_cuisine.some((c) => c.SrNo === item.SrNo)
+        );
+      });
+
+      console.log("Filtered Data: ", filteredData);
+    } else if (
+      time.length === 99 &&
+      money.length === 99 &&
+      sample_cuisine.length !== 0
+    ) {
+      console.log("when two isnull");
+      filteredData = array.filter((item) => {
+        return sample_cuisine.some((c) => c.SrNo === item.SrNo);
+      });
+
+      console.log("Filtered Data: ", filteredData);
+    } else if (
+      time.length !== 99 &&
+      money.length === 99 &&
+      sample_cuisine.length === 0
+    ) {
+      console.log("when two isnull");
+      filteredData = array.filter((item) => {
+        return time.some((t) => t.SrNo === item.SrNo);
+      });
+
+      console.log("Filtered Data: ", filteredData);
+    } else if (
+      time.length === 99 &&
+      money.length !== 99 &&
+      sample_cuisine.length === 0
+    ) {
+      console.log("when two isnull");
+      filteredData = array.filter((item) => {
+        return money.some((m) => m.SrNo === item.SrNo);
+      });
+
+      console.log("Filtered Data: ", filteredData);
+    } else {
+      console.log("No if statement has been executed");
+    }
+
+    return filteredData;
   };
 
   const handleClick = () => {
-    setTime(null);
-    setMoney(null);
-    setDropdiet(null);
+    setTime([]);
+    setMoney([]);
+    setCuisine("");
     setIsOpen(!isOpen);
   };
 
-  //const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  // useEffect(()=>{
-  //     fetchData();
-  // },[]);
-
-  const SingleData = () => {
-    if (time != null) {
-      console.log(time);
-    } else if (money != null) {
-      console.log(money);
-    } else if (dropdiet != null) {
-      console.log(dropdiet);
-    }
-  };
-
-  const TwoData = (sample_diet) => {
-    if (time != null && money != null) {
-      TimeAndMoney = Sample.filter((item) => {
-        return time.includes(item) && money.includes(item);
-      });
-      console.log("Time and money ", TimeAndMoney);
-    }
-    if (time != null && dropdiet != null) {
-      TimeAndDiet = Sample.filter((item) => {
-        return time.includes(item) && sample_diet.includes(item);
-      });
-      console.log("Time and diet ", TimeAndDiet);
-    }
-    if (money != null && dropdiet != null) {
-      MoneyAndDiet = Sample.filter((item) => {
-        return money.includes(item) && sample_diet.includes(item);
-      });
-      console.log("Money and diet ", MoneyAndDiet);
-    }
-  };
-
   useEffect(() => {
-    console.log("sample Time: ", time);
-    console.log("sample Money", money);
-    // console.log("Drop Diet ",dropdiet)
-    const sample_diet = Sample.filter((item) => {
-      return item.Diet === dropdiet;
+    const filteredData = {
+      time: time,
+      money: money,
+      cuisine: filteredFoodData,
+    };
+    console.log("filteredData contains t,m,c", filteredData);
+    dispatch({
+      type: actionType.SET_DATA,
+      data: filteredData,
     });
-    console.log("dietttt", sample_diet);
-    //console.log(sampleData)
-    
-  });
+  }, [filteredFoodData]);
 
-
-  
-
- /* function generateRandomNumbers(min, max, count) {
-    const randomNumbers = [];
-  
-    for (let i = 0; i < count; i++) {
-      const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-      randomNumbers.push(randomNumber);
-    }
-  
-    return randomNumbers;
-  }
-
-const minRange = 1;
-const maxRange = 100;
-const count = 100;
-const randomNumbers = generateRandomNumbers(minRange, maxRange, count);
-
-
-
-  useEffect(() => {
-    const mappedArray = randomNumbers.map((number) =>{
-      if (!data) {
-        getDataById(number).then((info) => {
-          console.log(info)
-          dispatch({
-            type: actionType.SET_DATA,
-            data: info.data,
-          });
-        });
-      }
-    });
-   
-  },[]);
-  
-*/
- 
-
-  // const fetchData= async ()=>{
-  //     try{
-  //         const response =await fetch("http://localhost:5000/api/data");
-  //         const jsonData =await response.json();
-
-  //         setData(jsonData);
-  //         setLoading(false);
-
-  //     }
-  //     catch(error){
-  //         console.log('error:',error);
-  //         setLoading(false);
-  //     }
-  // }
-  // if(loading){
-  //     return <div> Loading...</div>
-  // }
-  // const diet =[];
-  // data.Sample.map((item)=>{
-  //     diet.push(item.Diet);
-  // })
-
-  // const uniqueData =diet.filter((item,index)=>{
-  //     return diet.indexOf(item)===index;
-  // })
-
-  //console.log(uniqueData)
-
+  console.log("filteredFoodData hook after filter", filteredFoodData);
   return (
     <div>
-      <button className="button" onClick={handleClick}>
+      <button className="button" onClick={() => setIsOpen(true)}>
         Filter
       </button>
       {isOpen && (
         <div className="popup">
           <div className="popup-content">
-            <h2>Filter</h2>
-            <ul>
-              <li>
+            <h2 className="filter">Filter</h2>
+            <div className="filter-content">
+              <div className="preptime-range">
                 <Preptime />
-              </li>
-              <li>
+              </div>
+              <div className="filtermoney-range">
                 <Money />
-              </li>
-
-              <li>{/* <DropdownMenu data={uniqueData} /> */}</li>
-            </ul>
+              </div>
+              <div className="drop-items">
+                <DropdownMenu data={uniqueCuisineData} />
+              </div>
+            </div>
             <button onClick={handleClick}>Close</button>
             <button onClick={handleSubmit}>Submit</button>
           </div>
         </div>
       )}
+
+      {filteredFoodData.map((food) => (
+        <div key={food.id}>
+          <h3>{food.name}</h3>
+          {/* Render other food details here */}
+        </div>
+      ))}
     </div>
   );
 };
 
-export { Filter, TimeAndMoney, TimeAndDiet, MoneyAndDiet };
+export { Filter, TimeAndMoney, TimeAndCuisine, MoneyAndCuisine, filteredData };

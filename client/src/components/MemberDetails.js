@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./MemberDetails.css";
 import {
   getUserById,
   getUserFollowing,
@@ -9,11 +10,14 @@ import {
   getAllPostOfUser,
 } from "../api";
 import { useParams } from "react-router-dom";
-import MemberComment from "./MemberComment"
+import MemberComment from "./MemberComment";
 import Navbar from "./Navbar";
 import { Nav } from "reactstrap";
 import { Postdata } from "./FinalData";
 import CommentSection from "./Comments";
+import { bgColors } from "../utils/style";
+import { useStateValue } from "../context/StateProvider";
+import MemberLike from "./MemberLike";
 
 const MemberDetails = () => {
   const { memberId } = useParams();
@@ -31,24 +35,19 @@ const MemberDetails = () => {
 
   const [likesToogle, setLikesToogle] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [popupcontent, setPopupcontent] = useState([]);
+  const [popuptogle, setPopuptogle] = useState(false);
+  const [styling, setStyling] = useState(null);
 
-  /*useEffect(() => {
-    //likeCount = props.data.likes.length;
-    
-    setLikeCount(postData.likes.length);
-    //console.log("likesCount", likeCount);
-  }, [postData.likes]);
-  */
+  //for like
+  const changedcontent = (food) => {
+    setPopupcontent([food]);
+    setPopuptogle(!popuptogle);
 
-  const changeContent = (props) => {
-    setLikesToogle(!likesToogle);
-    setLikeCount((prevCount) => (likesToogle ? prevCount - 1 : prevCount + 1));
-
-    const postId = props._id;
-    const data = { userId: member._id };
-    if (!likesToogle) postLike(postId, data);
-    else {
-      postUnlike(postId, data);
+    if (styling === null) {
+      setStyling({ position: "fixed" });
+    } else {
+      setStyling(null);
     }
   };
   //use effect for receiving the followers and follwing of the new member
@@ -104,40 +103,72 @@ const MemberDetails = () => {
     fetchData();
   }, []);
 
-  
-
   return (
     <div>
       {member &&
         member.map((item) => {
           return (
-            <>
+            <div className="container">
               <img
-                className="w-12 min-w object-cover rounded-full shadow-lg"
+                className="w-12 min-w object-cover rounded-full shadow-lg image"
                 src={item.imageURL}
                 alt=""
                 referrerPolicy="no-referrer"
               />
-              <p>Following count </p>
-              <p>{userFollowing.length}</p>
-              <p>Name :{item.name}</p>
-              <br></br>
-              <p> Follwer count</p>
-              <p>{userFollower.length}</p>
-            </>
+              <p className="names">{item.name}</p>
+              <div className="fff">
+                <div className="FollowerModal__container">
+                  <p className="Followingcount">Following</p>
+                  <p className="FollowerModal__length">
+                    {userFollowing.length}
+                  </p>
+                </div>
+                <div className="FollowerModal__container ">
+                  <p className="Followercount">Followers</p>
+                  <p className="FollowerModal__length">{userFollower.length}</p>
+                </div>
+              </div>
+            </div>
           );
         })}
-      <div>
+      <div className="parent-containers">
         {postData.map((item) => {
           return (
-            <div>
-              <img src={item.images} />
-
-              <button onClick={() => changeContent(item)}>
-                {likesToogle ? "Unlike" : "Like"}
+            <div className="content_cards">
+              <img alt="" src={item.images} />
+              <p className="caption">{item.Caption}</p>
+              <div className="likee">
+                <MemberLike data={item}></MemberLike>
+              </div>
+              <div>
+                <p>{item.comments}</p>
+              </div>
+              <button className="comm" onClick={() => changedcontent(item)}>
+                Comments
               </button>
-              <p>likes : {likeCount}</p>
-              <MemberComment data = {item}></MemberComment>
+
+              {popuptogle && (
+                <div className="pop_up_container" onClick={changedcontent}>
+                  <div
+                    className="pop_up_body"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="pop_up_header">
+                      <button onClick={changedcontent}>x</button>
+                    </div>
+                    <div className="pop_up_content">
+                      {popupcontent.map((pop) => {
+                        console.log("pop", popupcontent);
+                        return (
+                          <div className="pop_up_card">
+                            <MemberComment data={pop}></MemberComment>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}

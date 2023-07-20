@@ -1,0 +1,65 @@
+.user-profile__image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+  transition: opacity 0.3s ease;
+}
+
+.user-profile__image:hover {
+  opacity: 0.75;
+}
+
+
+.user-profile__name {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  top:10px;
+  transition: color 0.3s ease;
+}
+
+.user-profile__name:hover {
+  color: #000;
+}
+
+.user-profile__container {
+  background-color:  white;
+  transition: background-color 0.3s ease;
+}
+
+
+.app_container {
+  background-color: rgba(128, 128, 128, 0.627);
+  transition: background-color 0.3s ease;
+}
+
+
+
+.content_container {
+  position: relative;
+}
+.content_container {
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.content_container:hover {
+  transform: scale(1.012);
+}
+
+.pop_up_container {
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.pop_up_container:hover {
+  background-color: rgba(9, 3, 55, 0.8);
+}
+
+.pop_up_body {
+  background-color: #f9fafb;
+  transition: background-color 0.3s ease;
+}
+

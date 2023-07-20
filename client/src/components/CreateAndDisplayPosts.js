@@ -14,20 +14,37 @@ import { MdDelete } from "react-icons/md";
 import { storage } from "../config/firebase.config";
 import { useStateValue } from "../context/StateProvider";
 
-import {
-  getAllData, savePost
-} from "../api";
+import { getAllData, savePost } from "../api";
 import { actionType } from "../context/reducer";
-
 
 export const FileLoader = ({ progress }) => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <p className="text-xl font-semibold text-textColor">
+      <p style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
         {Math.round(progress) > 0 && <>{`${Math.round(progress)}%`}</>}
       </p>
-      <div className="w-20 h-20 min-w-[40px] bg-red-600  animate-ping  rounded-full flex items-center justify-center relative">
-        <div className="absolute inset-0 rounded-full bg-red-600 blur-xl "></div>
+      <div
+        style={{
+          width: "4rem",
+          height: "4rem",
+          backgroundColor: "white",
+          animation: "ping 1s infinite",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: "50%",
+            backgroundColor: "white",
+            filter: "blur(0.75rem)",
+          }}
+        ></div>
       </div>
     </div>
   );
@@ -47,7 +64,6 @@ export const FileUploader = ({
 
     const storageRef = ref(
       storage,
-
       `${isImage ? "Images" : ""}/${Date.now()}-${uploadedFile.name}`
     );
     const uploadTask = uploadBytesResumable(storageRef, uploadedFile);
@@ -60,10 +76,8 @@ export const FileUploader = ({
         setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
         console.log("Upload is done" + progress);
       },
-
       (error) => {
         console.log("error");
-        
         isLoading(false);
       },
       () => {
@@ -72,8 +86,6 @@ export const FileUploader = ({
           setImageURL(downloadURL);
           setProgress(0);
           isLoading(false);
-          
-          
         });
       }
     );
@@ -81,12 +93,31 @@ export const FileUploader = ({
 
   return (
     <label>
-      <div className="flex flex-col items-center justify-center h-full">
-        <div className="flex flex-col justify-center items-center cursor-pointer">
-          <p className="font-bold text-2xl">
-            
-          </p>
-          <p className="text-lg">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100%",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            cursor: "pointer",
+          }}
+        >
+          <p style={{ fontWeight: "bold", fontSize: "2rem" }}></p>
+          <p
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              marginTop: "1rem",
+            }}
+          >
             Click to upload {isImage ? "image" : ""}
           </p>
         </div>
@@ -96,7 +127,7 @@ export const FileUploader = ({
         name="upload-file"
         accept={`${isImage ? "Image/*" : ""}`}
         onChange={uploadFile}
-        className="w-0 h-0"
+        style={{ width: "0", height: "0" }}
       />
     </label>
   );
@@ -107,7 +138,18 @@ export const DisabledButton = () => {
     <button
       disabled
       type="button"
-      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+      style={{
+        color: "white",
+        backgroundColor: "blue",
+        cursor: "default",
+        fontSize: "0.875rem",
+        fontWeight: "500",
+        borderRadius: "0.375rem",
+        padding: "0.625rem 1.25rem",
+        marginRight: "0.5rem",
+        display: "inline-flex",
+        alignItems: "center",
+      }}
     >
       <svg
         role="status"
@@ -133,88 +175,130 @@ export const DisabledButton = () => {
 const CreateAndDisplayPosts = () => {
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [postImageUrl, setpostImageUrl] = useState(null);
-  
   const [uploadProgress, setUploadProgress] = useState(0);
-
-
   const [text, setText] = useState("");
-  const [{user} , dispatch ] = useStateValue()
-  
-  
- 
+  const [{ user }, dispatch] = useStateValue();
 
   const deleteImageObject = (postImageUrl, action) => {
     if (action === "image") {
       setIsImageLoading(true);
       setpostImageUrl(null);
-    } 
+    }
 
     const deleteRef = ref(storage, postImageUrl);
     deleteObject(deleteRef).then(() => {
-      console.log("file uploaded")
+      console.log("file uploaded");
       setIsImageLoading(false);
     });
   };
+
   const savePosts = () => {
-    if (!postImageUrl  || !text) {
-      console.log("error")
+    if (!postImageUrl || !text) {
+      console.log("error");
     } else {
       setIsImageLoading(true);
-      
+
       const data = {
-        Caption: text ,
+        Caption: text,
         images: postImageUrl,
       };
 
-      
-
-      savePost(data , user.user._id).then((res) => {
+      savePost(data, user.user._id).then((res) => {
         getAllData().then((info) => {
           dispatch({ type: actionType.SET_ALL_DATA, allData: info.data });
         });
       });
 
-      console.log("id" , user.user._id)
-      
+      console.log("id", user.user._id);
+
       setIsImageLoading(false);
       setText("");
       setpostImageUrl(null);
-      
     }
   };
+
   return (
-    <div className="flex flex-col flex-wrap items-center justify-center p-4 border border-gray-300 gap-4 rounded">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <input
         type="text"
-        placeholder="Food Name"
-        className="w-full p-3 rounded-md text-base font-semibold text-textColor outline-none shadow-sm border border-gray-300 bg-transparent"
+        placeholder="Enter Food Name"
+        style={{
+          width: "80%",
+          margin: "0 auto",
+          padding: "0.75rem",
+          borderRadius: "0.375rem",
+          fontSize: "1rem",
+          fontWeight: "bold",
+          color: "#333",
+          outline: "none",
+          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
+          border: "1px solid #ccc",
+          background: "#F2F2F2",
+          transition: "border-color 0.3s ease",
+        }}
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      
 
-      <div className="bg-card  backdrop-blur-md w-full lg:w-300 h-300 rounded-md border-2 border-dotted border-gray-300 cursor-pointer">
+      <div
+        style={{
+          background: "#F9FAFB",
+          backdropFilter: "blur(10px)",
+          width: "80%",
+          height: "200px",
+          borderRadius: "0.375rem",
+          border: "2px dashed #ccc",
+          cursor: "pointer",
+        }}
+      >
         {isImageLoading && <FileLoader progress={uploadProgress} />}
         {!isImageLoading && (
           <>
             {!postImageUrl ? (
               <FileUploader
                 setImageURL={setpostImageUrl}
-                
                 isLoading={setIsImageLoading}
                 setProgress={setUploadProgress}
                 isImage={true}
               />
             ) : (
-              <div className="relative w-full h-full overflow-hidden rounded-md">
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: "100%",
+                  overflow: "hidden",
+                  borderRadius: "0.375rem",
+                }}
+              >
                 <img
                   src={postImageUrl}
                   alt="uploaded image"
-                  className="w-full h-full object-cover"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
                 <button
                   type="button"
-                  className="absolute bottom-3 right-3 p-3 rounded-full bg-red-500 text-xl cursor-pointer outline-none hover:shadow-md  duration-500 transition-all ease-in-out"
+                  style={{
+                    position: "absolute",
+                    bottom: "0.75rem",
+                    right: "0.75rem",
+                    padding: "0.75rem",
+                    borderRadius: "50%",
+                    backgroundColor: "red",
+                    color: "white",
+                    fontSize: "1.5rem",
+                    cursor: "pointer",
+                    outline: "none",
+                    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
+                    transition: "box-shadow 0.3s ease-in-out",
+                  }}
                   onClick={() => {
                     deleteImageObject(postImageUrl, "Images");
                   }}
@@ -227,27 +311,36 @@ const CreateAndDisplayPosts = () => {
         )}
       </div>
 
-      <div className="flex flex-col items-center justify-end w-full p-4">
-        {isImageLoading  ? (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          width: "80%",
+          padding: "1rem",
+        }}
+      >
+        {isImageLoading ? (
           <DisabledButton />
         ) : (
           <motion.button
             whileTap={{ scale: 0.75 }}
-            className="px-8 py-2 rounded-md text-white bg-red-600 hover:shadow-lg"
+            style={{
+              padding: "0.5rem 2rem",
+              borderRadius: "0.375rem",
+              color: "white",
+              backgroundColor: "#f56565",
+              cursor: "pointer",
+            }}
             onClick={savePosts}
           >
             Send
           </motion.button>
         )}
       </div>
-
-      
-
-      
-      
     </div>
   );
 };
 
-
-export default CreateAndDisplayPosts
+export default CreateAndDisplayPosts;

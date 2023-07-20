@@ -57,11 +57,12 @@ export const getAllData = async () => {
 
 export const getDataById = async () => {
   let numbers = [];
+  const maxRange=100
   try {
-    for (let i = 0; i < 5; i++) {
-      const randomNumber = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+    for (let i = 1; i < 100; i++) {
+      const randomId = Math.floor(Math.random() * maxRange) + 1;
       const res = await axios.get(
-        `${baseURL}api/sample/getOne/${randomNumber}`
+        `${baseURL}api/sample/getOne/${randomId}`
       );
       numbers.push(res);
     }

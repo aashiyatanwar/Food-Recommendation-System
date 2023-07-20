@@ -2,47 +2,84 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
- 
+  width: 100vw; /* Use viewport width */
+  height: 100vh; /* Use viewport height */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 10px;
-  overflow: hidden;
-  z-index:9999;
+  z-index: 9999;
 }
-/* background-color: rgba(0, 0, 0, 0.5); */
- .popup-content {
-  background-color: #fff;
+
+.popup-content {
+  /* background-color: rgba(255, 255, 255, 0.3); Adjust the alpha value (0 to 1) */
   padding: 20px;
-  border-radius: 15px;
-  max-width: 400px;
+  border-radius: 5px;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #fff;
+}
+
+/* .popup-content {
+  background-image: url('/public/spices.jpg');
+  background-size: cover;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+} */
+/* Rest of the styles remain the same */
+
+  .popup h2 {
+    margin-top: 0;
+  }
+  
+  .popup p {
+    margin-bottom: 20px;
+  }
+  
+  .popup button {
+    padding: 10px 20px;
+    background-color: #6246d3c2;
+    color: #ffffff;
+    border: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: #4c4e4e4c;
+  }
+ 
+.filter-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding:30px;
+ 
+}
+.preptime-range {
+  width: 48%;
+  
+  padding-right: 50px;
+}
+
+.filtermoney-range {
+  width: 48%;
+  margin-left: 30px;
+  
+}
+
+.drop-items {
+  clear: both;
+ text-align:center;
+}
+.filter {
+  color: rgb(66, 50, 168);
+  background-color: bisque;
+  width: 200px; /* Adjust the width as needed */
+  margin: 10px auto; /* Center the filter element horizontally */
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   text-align: center;
 }
-
-.popup h2 {
-  margin-top: 0;
-}
-
-.popup p {
-  margin-bottom: 20px;
-}
-
-.popup button {
-  padding: 10px 20px;
-  background-color: #6246d3c2;
-  color: #ffffff;
-  border: 2px;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: #4c4e4e4c;
-  
-}
-
- .button{
-  background-color: rgba(82, 3, 82, 0.196);
-  
-}
-/* border-radius:10px;
-  box-shadow:0 2px 4px -2px rgba(0,0,0,0.5); */

@@ -7,29 +7,35 @@ import { Postdata } from "./FinalData";
 import "./FrontView/Frontview.css";
 import Likes from "./Likes";
 import Followers from "./Followers";
-import Navbar from "./Navbar";
-import { deletePostById } from "../api";
 import FollowerModal from "./FollowerModal";
-
+import { deletePostById } from "../api";
 const UserProfile = () => {
-  const [{ user }] = useStateValue();
+  const [{ user }, dispatch] = useStateValue();
   const [array, setArray] = useState([]);
   //console.log("user", user);
 
   useEffect(() => {
-    if(user && user.user._id){
+    if (user && user.user._id) {
       Postdata(user.user._id)
-      .then((data) => {
-        setArray(Array.from(data));
-        //console.log("data array", array);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+        .then((data) => {
+          setArray(Array.from(data));
+          //console.log("data array", array);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-    
   }, [user]);
+
+  const handleDeletePost = async (postId) => {
+    try {
+      console.log("commentId", postId);
+      deletePostById(postId);
+      setArray(array.filter((item) => item._id !== postId));
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
 
   const [popupcontent, setPopupcontent] = useState([]);
   const [popuptogle, setPopuptogle] = useState(false);
@@ -45,19 +51,9 @@ const UserProfile = () => {
   };
 
   const [styling, setStyling] = useState(null);
-  const handleDeletePost = async (postId) => {
-    try {
-      console.log("commentId" , postId)
-      deletePostById(postId);
-      setArray(array.filter((item) => item._id !== postId));
-    } catch (error) {
-      console.error("Error deleting comment:", error);
-    }
-  };
 
   return (
     <div>
-      <Navbar></Navbar>
       <div>
         <img
           className="w-12 min-w object-cover rounded-full shadow-lg"
@@ -70,7 +66,6 @@ const UserProfile = () => {
             {user?.user.name}
           </p>
         </div>
-
         <Followers></Followers>
         <FollowerModal></FollowerModal>
         <CreateAndDisplayPosts></CreateAndDisplayPosts>
@@ -79,11 +74,13 @@ const UserProfile = () => {
         <div className="content_container" style={styling}>
           {array.map((food) => {
             return (
-              <> <span>
-                <Likes data={food} />
-                <button onClick={() => handleDeletePost(food._id)}>
-              Delete
-            </button>
+              <>
+                {" "}
+                <span>
+                  <Likes data={food} />
+                  <button onClick={() => handleDeletePost(food._id)}>
+                    Delete
+                  </button>
                 </span>
               </>
             );

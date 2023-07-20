@@ -7,14 +7,31 @@ import { app } from "../config/firebase.config";
 import { motion } from "framer-motion";
 import "./Navbar.css";
 import { Filter } from "./Filter";
-
+import axios from "axios";
 import "../index.css";
 import { Button } from "reactstrap";
+import Food from "./FinalData";
+import { useEffect } from "react";
+
 const Navbar = () => {
   const navigate = useNavigate();
   const [{ user }, dispatch] = useStateValue();
 
   const [isMenu, setIsMenu] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [datas, setArray] = useState([]);
+  const uniqueCuisines = [...new Set(datas)];
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    Food()
+      .then((data) => {
+        console.log("data", data);
+        setArray(data.map((item) => item.Cuisine));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const logout = () => {
     const firebaseAuth = getAuth(app);
@@ -26,13 +43,70 @@ const Navbar = () => {
       .catch((e) => console.log(e));
     navigate("/login", { replace: true });
   };
-  //navbar-expand-lg navbar-dark bg-primary
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    setLoading(true);
+    console.log("searchquery", searchQuery);
+    // Make the API call to fetch data from MongoDB
+    axios.get("http://localhost:5000/api/sample/getAll").then((response) => {
+      const results = response.data.data;
+      // Process the retrieved data as needed
+      const query = searchQuery.toLowerCase();
+      console.log("query", query);
+      const filteredResults = results.filter((result) =>
+        result.Cuisine.toLowerCase().includes(query)
+      );
+      setTimeout(() => {
+        setLoading(false);
+        displaySearchResults(filteredResults);
+      }, 7000); // Simulating a delay of 2 seconds
+
+      console.log("filtered", filteredResults);
+      // Display the filtered results
+    });
+  };
+  const displaySearchResults = (results) => {
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
+
+    if (results.length > 0) {
+      results.forEach((result) => {
+        const resultDiv = document.createElement("div");
+        resultDiv.classList.add("result-container");
+
+        resultDiv.innerHTML = `
+          <div class="result-header">
+            <h3>${result.RecipeName}</h3>
+            <p>Total Time: ${result.TotalTimeInMins} mins</p>
+          </div>
+          <div class="result-content">
+            <div class="result-image">
+              <img src="${result["image-url"]}" alt="Recipe Image" />
+            </div>
+            <div class="result-details">
+              <p><strong>Ingredients:</strong> ${result.Ingredients}</p>
+              <p><strong>Cuisine:</strong> ${result.Cuisine}</p>
+              <p><strong>Price:</strong> ${result.price}</p>
+              <p><strong>Instructions:</strong> ${result.TranslatedInstructions}</p>
+            </div>
+          </div>
+        `;
+
+        resultsDiv.appendChild(resultDiv);
+      });
+    } else {
+      resultsDiv.innerHTML = "<p>No results found.</p>";
+    }
+  };
+  console.log("all datas", datas);
+  console.log("uniqueCuisines", uniqueCuisines);
   return (
-    <nav className="navbar   navbar-expand-lg navbar-nav">
+    <nav className="navbar navbar-expand-lg navbar-nav">
       <div className="container-fluid">
-        {/* <a className="" href="#" style={{marginRight : "-20px"}}> */}
+        {/* Logo */}
         <img
-          src={"../logo.avif"}
+          src="../logo.avif"
           type=""
           autoPlay
           muted
@@ -43,8 +117,7 @@ const Navbar = () => {
             objectFit: "fit",
             margin: "-10px",
           }}
-        ></img>
-        {/* </a> */}
+        />
 
         <div
           className="collapse navbar-collapse"
@@ -52,35 +125,77 @@ const Navbar = () => {
           style={{ marginLeft: "5px" }}
         >
           <ul className="navbar-nav me-auto">
-            <li className="Filter">
+            <li className="nav-item">
               <Filter />
             </li>
-
-            {/* <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-          <div className="dropdown-menu">
-            <a className="dropdown-item" href="#">Action</a>
-            <a className="dropdown-item" href="#">Another action</a>
-            <a className="dropdown-item" href="#">Something else here</a>
-            <div className="dropdown-divider"></div>
-            <a className="dropdown-item" href="#">Separated link</a>
-          </div>
-        </li> */}
           </ul>
 
-          <form className="d-flex" role="search">
+          <form
+            className="d-flex"
+            role="search"
+            style={{ position: "relative" }}
+          >
             <input
               className="form-control me-2"
-              type="search"
-              placeholder="Search"
+              type="search "
+              placeholder="Search by Cuisine"
               aria-label="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ width: "400px " }}
             />
-            <button className="btn btn-outline-success" type="submit">
+            <button
+              className="btn btn-outline-success"
+              type="submit"
+              onClick={handleSearch}
+            >
               Search
             </button>
+            <div
+              className="dropdown"
+              style={{
+                position: "absolute",
+                top: "100%",
+                left: "0",
+                zIndex: "10",
+                width: "100%",
+                marginTop: "5px",
+              }}
+            >
+              {uniqueCuisines
+                .filter((item) => {
+                  const searchTerm = searchQuery.toLowerCase();
+                  const Cuisine = item.toLowerCase();
+
+                  return (
+                    searchTerm &&
+                    Cuisine.startsWith(searchTerm) &&
+                    Cuisine !== searchTerm
+                  );
+                })
+                .slice(0, 20)
+                .map((item) => (
+                  <div
+                    onClick={() => setSearchQuery(item)}
+                    className="dropdown-row"
+                    key={item}
+                    style={{
+                      padding: "10px",
+                      backgroundColor: "#fff",
+                      border: "1px solid #ddd",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {item}
+                  </div>
+                ))}
+            </div>
+            {loading && <p>Loading...</p>}{" "}
+            {/* Display loading message when loading is true */}
           </form>
+          {/* Profile and Signout */}
           <div
-            className="flex items-center ml-auto cursor-pointer gap-2 relative  "
+            className="flex items-center ml-auto cursor-pointer gap-2 relative"
             onMouseEnter={() => setIsMenu(true)}
             onMouseLeave={() => setIsMenu(false)}
           >
@@ -97,26 +212,20 @@ const Navbar = () => {
             </div>
 
             {isMenu && (
-              <div className="">
-                <NavLink to={"/userProfile"}>
-                  <p className="text-base text-textColor hover:font-semibold duration-150 ease-in-out">
-                    Profile
-                  </p>
+              <div className="styled-div">
+                <NavLink to="/userProfile" className="dropdown-item">
+                  Profile
                 </NavLink>
 
                 {user?.user.role === "admin" && (
                   <>
-                    <NavLink to={"/dashboard/home"}>
-                      <p className="text-base text-textColor hover:font-semibold duration-150  ease-in-out">
-                        Dashboard
-                      </p>
+                    <NavLink to="/dashboard/home" className="dropdown-item">
+                      Dashboard
                     </NavLink>
                   </>
                 )}
-                <p
-                  className="text-base text-textColor hover:font-semibold duration-150  ease-in-out"
-                  onClick={logout}
-                >
+
+                <p className="dropdown-item" onClick={logout}>
                   Sign out
                 </p>
               </div>
