@@ -11,7 +11,7 @@ import {
   Behavior,
   Format,
 } from "devextreme-react/range-selector";
-import DataGrid from "devextreme-react/data-grid";
+//import DataGrid from "devextreme-react/data-grid";
 import { Sample } from "./sample";
 import Food from "./FinalData";
 let sample_time = [];

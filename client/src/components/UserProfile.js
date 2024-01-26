@@ -6,7 +6,7 @@ import CreateAndDisplayPosts from "./CreateAndDisplayPosts";
 import { Postdata } from "./FinalData";
 import "./FrontView/Frontview.css";
 import Likes from "./Likes";
-import Followers from "./Followers";
+import Followers from "./Followers"
 import FollowerModal from "./FollowerModal";
 import { deletePostById } from "../api";
 const UserProfile = () => {
@@ -14,29 +14,33 @@ const UserProfile = () => {
   const [array, setArray] = useState([]);
   //console.log("user", user);
 
+  
+
   useEffect(() => {
-    if (user && user.user._id) {
+    if(user && user.user._id){
       Postdata(user.user._id)
-        .then((data) => {
-          setArray(Array.from(data));
-          //console.log("data array", array);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      .then((data) => {
+        setArray(Array.from(data));
+        //console.log("data array", array);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     }
+    
   }, [user]);
 
   const handleDeletePost = async (postId) => {
     try {
-      console.log("commentId", postId);
+      console.log("commentId" , postId)
       deletePostById(postId);
       setArray(array.filter((item) => item._id !== postId));
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
   };
-
+  
   const [popupcontent, setPopupcontent] = useState([]);
   const [popuptogle, setPopuptogle] = useState(false);
   const changedcontent = (food) => {
@@ -71,16 +75,14 @@ const UserProfile = () => {
         <CreateAndDisplayPosts></CreateAndDisplayPosts>
       </div>
       <div className="app_container">
-        <div className="content_container" style={styling}>
+       <div className="content_container" style={styling}>
           {array.map((food) => {
             return (
-              <>
-                {" "}
-                <span>
-                  <Likes data={food} />
-                  <button onClick={() => handleDeletePost(food._id)}>
-                    Delete
-                  </button>
+              <> <span>
+                <Likes data={food} />
+                <button onClick={() => handleDeletePost(food._id)}>
+              Delete
+            </button>
                 </span>
               </>
             );

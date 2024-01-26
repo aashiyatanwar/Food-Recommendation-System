@@ -64,11 +64,6 @@ const updateUserData = async (decodeValue, req, res) => {
   }
 };
 
-/*router.get('/currentUser', (req, res) => {
-  console.log("id" , userIdd)
-  res.send(userIdd)
-});
-*/
 
 router.get("/getUsers", async (req, res) => {
   const options = {
@@ -123,16 +118,10 @@ router.put("/follower/:userId", async (req, res) => {
 });
 
 router.put("/following/:userId/:fid", async (req, res) => {
-  const userId = req.params.userId; // Store the user ID
-  //console.log("b-userId" , userId)
-  //const uid = req.query.following;
-  //const uuid = { _id: uid };
+  const userId = req.params.userId; 
   const filter = { _id: req.params.userId };
-  //console.log("b-filter" , filter)
-  // Assuming the ID is passed as a query parameter
-
   const uuid = { _id: req.params.fid };
-  //console.log("b-uuid" , uuid)
+  
 
   try {
     console.log(userId, uuid);

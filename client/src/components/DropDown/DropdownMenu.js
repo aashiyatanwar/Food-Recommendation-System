@@ -18,11 +18,11 @@ const DropdownMenu = ({ data }) => {
     setSelectedOption(option);
     setoption = option;
     setIsOpen(false);
-    console.log("dropDown", option);
+    // console.log("dropDown", option);
   };
 
   useEffect(() => {
-    console.log("the dropdown menu component re-rendered ");
+    // console.log("the dropdown menu component re-rendered ");
   });
   return (
     <div
