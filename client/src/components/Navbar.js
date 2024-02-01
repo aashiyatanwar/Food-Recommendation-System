@@ -217,14 +217,7 @@ const Navbar = () => {
                   Profile
                 </NavLink>
 
-                {user?.user.role === "admin" && (
-                  <>
-                    <NavLink to="/dashboard/home" className="dropdown-item">
-                      Dashboard
-                    </NavLink>
-                  </>
-                )}
-
+                
                 <p className="dropdown-item" onClick={logout}>
                   Sign out
                 </p>

@@ -157,11 +157,8 @@ const Login = ({ setAuth }) => {
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
       <img
-        src={""}
-        type=""
-        autoPlay
-        muted
-        loop
+        src={"../food-rec-sys.jpg"}
+        
         style={{ width: "100%", height: "100%", objectFit: "cover" }}
       ></img>
 
@@ -182,7 +179,7 @@ const Login = ({ setAuth }) => {
         <div
           style={{
             width: "100%",
-            height: "370px",
+            height: "500px",
             maxWidth: "375px",
             padding: "16px",
             background: "rgba(255, 255, 255, 0.9)",
@@ -214,6 +211,11 @@ const Login = ({ setAuth }) => {
              
               </p>
           </div>
+          <img
+        src={"../food-rec-sys.png"}
+        
+        style={{ width: "100%", height: "150%", objectFit: "cover" }}
+      ></img>
           <div
             onClick={loginWithGoogle}
             style={{
