@@ -12,7 +12,7 @@
 }
 .content_container{
     width:100%;
-    height:100%;
+    height:200%;
     display:grid;
     grid-template-columns: repeat(3,1fr);
     background-color: rgb(199, 181, 181);
@@ -26,7 +26,7 @@
 
 }
 .content_card{
-    height:90%;
+    height:195%;
     width:95%;
     object-position: center;
     display:block;
@@ -37,10 +37,10 @@
 
 }
 img{
-    width:80%;
+    width:75%;
     height:75%;
     align-items: center;
-    margin:10px 20px;
+    margin:10px 10px;
     padding: 10px;
     border-bottom: #948e8e;
     object-fit: cover;
@@ -50,12 +50,13 @@ p{
 }
 
 button{
-    padding: 5px 10px;
+    padding: 5px 15px;
     background-color: rgb(165, 144, 144);
     border:none;
     border-radius: 10px;
     outline: none;
     margin:10px;
+    margin-bottom: 20px;
 }
 .pop_up_container{
     position:fixed;
